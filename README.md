@@ -1,2 +1,2 @@
-# jsp-aufgabe01d_personenVerwaltung_v2
-jsp-aufgabe01d_personenVerwaltung_v2
+# jsp-aufgabe01d_personenverwaltung_v2
+jsp-aufgabe01d_personenverwaltung_v2
