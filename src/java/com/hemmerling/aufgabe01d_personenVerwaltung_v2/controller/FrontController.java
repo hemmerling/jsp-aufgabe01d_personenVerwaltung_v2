@@ -3,13 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.hemmerling.aufgabe01d_personenVerwaltung_v2;
+package com.hemmerling.aufgabe01d_personenVerwaltung_v2.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
@@ -19,12 +22,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.hemmerling.aufgabe01d_personenVerwaltung_v2.model.persistence.*;
+import com.hemmerling.aufgabe01d_personenVerwaltung_v2.model.business.*;
 /**
  *
  * @author Administrator
  */
 @WebServlet(name = "FrontController", urlPatterns = {"/FrontController"})
 public class FrontController extends HttpServlet {
+
+    private static final String ACTION = "action";
+    private static final String CREATE = "create";
+    private static final String VIEW = "view";
+
+    private static final String VORNAME = "vorname";
+    private static final String NACHNAME = "nachname";
 
     // Sitzungsattribut
     private static final String ITEMS = "items";
@@ -33,12 +45,6 @@ public class FrontController extends HttpServlet {
     private static final String STARTSEITE = "index.jsp";
     private static final String ANLEGEN = "anlegen.jsp";
     private static final String AUFLISTEN = "auflisten.jsp";
-
-    // Parameter
-    private static final String VORNAME = "vorname";
-    // private /* static */ final String VORNAME = getInitParameter("vorname");
-    private static final String NACHNAME = "nachname";
-    // private /* static */ final String NACHNAME = getInitParameter("nachname");
 
     private String personAnlegen(List<String[]> items, HttpServletRequest request) {
         String vorname = request.getParameter(VORNAME);
@@ -83,32 +89,73 @@ public class FrontController extends HttpServlet {
         HttpSession session = request.getSession();
         response.setContentType("text/html;charset=UTF-8");
 
-        List<String[]> items = (List<String[]>) session.getAttribute(ITEMS);
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet FrontController</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet FrontController at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
 
-        if (items == null) {
-            items = new LinkedList<String[]>();
-            session.setAttribute(ITEMS, items);
+            Enumeration paramNames = request.getParameterNames();
+            while (paramNames.hasMoreElements()) {
+                String paramName = (String) paramNames.nextElement();
+                String paramValue = request.getParameter(paramName);
+                if (paramValue != null && !paramValue.trim().isEmpty()) {
+                    out.print(paramValue + "</BR>");
+                }
+            }
         }
 
-        nextPage = personAnlegen(items, request);
+        String action = request.getParameter(ACTION);
+        String vorname = request.getParameter(VORNAME);
+        String nachname = request.getParameter(NACHNAME);
+        
+        if (
+                (action != null && !action.trim().isEmpty()) &
+                (vorname != null && !vorname.trim().isEmpty()) &
+                (nachname != null && !nachname.trim().isEmpty()) 
+            ){
+            switch (action) {
+                case CREATE: {
+                    Person person = new Person(vorname, nachname);
+                    new PersonSaveAction().execute(request, response);
+                    break;
+                }
+                case VIEW: {
+                    break;
+                }
+            }
 
+        }
+
+//        List<String[]> items = (List<String[]>) session.getAttribute(ITEMS);
+//
+//        if (items == null) {
+//            items = new LinkedList<String[]>();
+//            session.setAttribute(ITEMS, items);
+//        }
+//
+//        nextPage = personAnlegen(items, request);
         // an View weitergeben
-        forward(nextPage, request, response);
-
+        // forward(nextPage, request, response);
     }
 
-
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-/**
- * Handles the HTTP <code>GET</code> method.
- *
- * @param request servlet request
- * @param response servlet response
- * @throws ServletException if a servlet-specific error occurs
- * @throws IOException if an I/O error occurs
- */
-@Override
-        protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -122,7 +169,7 @@ public class FrontController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-        protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -133,7 +180,7 @@ public class FrontController extends HttpServlet {
      * @return a String containing servlet description
      */
     @Override
-        public String getServletInfo() {
+    public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 

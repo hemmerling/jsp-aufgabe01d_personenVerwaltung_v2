@@ -4,5 +4,5 @@
     Author     : rhemmerling
 --%>
 <a href="index.jsp">Startseite</a>
-<a href="anlegen.jsp">Person anlegen</a>
-<a href="auflisten.jsp">Personenliste</a>
+<a href="create.jsp">Person anlegen</a>
+<a href="FrontController?action=view">Personen auflisten</a>

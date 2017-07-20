@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.hemmerling.aufgabe01d_personenVerwaltung_v2;
+package com.hemmerling.aufgabe01d_personenVerwaltung_v2.model.business;
 
 import java.util.LinkedList;
 import java.util.List;

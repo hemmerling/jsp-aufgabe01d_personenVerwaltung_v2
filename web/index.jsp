@@ -9,11 +9,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Startseite [Web Components ( aufgabe01c_personenVerwaltung_v1_menu )]</title>
+        <title>Startseite [Web Components ( aufgabe01_personenVerwaltung_v2 )]</title>
     </head>
     <body>
         <jsp:include page = "header.jsp"/>
-        <h1>Web Components ( aufgabe01c_personenVerwaltung_v1_menu ) - Startseite</h1>
+        <h1>Web Components ( aufgabe01d_personenVerwaltung_v2 ) - Startseite</h1>
         <jsp:include page = "footer.jsp" />
     </body>
 </html>

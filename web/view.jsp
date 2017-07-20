@@ -10,11 +10,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Personenliste [Web Components ( aufgabe01c_personenVerwaltung_v1_menu )]</title>
+        <title>Personenliste [Web Components ( aufgabe01d_personenVerwaltung_v2 )]</title>
     </head>
     <body>
         <jsp:include page = "header.jsp" />
-        <h1>Personenliste</h1>
+        <h1>Personenliste - ## wird im augenblick nicht genutzt ##</h1>
         <%
             List<String[]> items = (List<String[]>) session.getAttribute("items");
             if (items == null /* || items.isEmpty() */) {

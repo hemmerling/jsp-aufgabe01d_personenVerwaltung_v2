@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.hemmerling.aufgabe01d_personenVerwaltung_v2;
+package com.hemmerling.aufgabe01d_personenVerwaltung_v2.model.business;
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -23,6 +24,9 @@ public class PersonSaveAction {
     // private /* static */ final String VORNAME = getInitParameter("vorname");
     private static final String NACHNAME = "nachname";
     // private /* static */ final String NACHNAME = getInitParameter("nachname");
+
+    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    }
 
     private String execute(List<String[]> items, HttpServletRequest request) {
         String vorname = request.getParameter(VORNAME);
@@ -42,5 +46,5 @@ public class PersonSaveAction {
         }
         return sresult;
     }
-
+       
 }
