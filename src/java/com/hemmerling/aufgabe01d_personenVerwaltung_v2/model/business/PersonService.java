@@ -15,7 +15,7 @@ import com.hemmerling.aufgabe01d_personenVerwaltung_v2.model.persistence.*;
  */
 public class PersonService {
     
-    static List<String[]> persons;
+    /* static */ List<String[]> persons;
     private static PersonService instance = null;
 
     protected PersonService(){
