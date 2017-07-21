@@ -28,6 +28,8 @@ public class FrontController extends HttpServlet {
     private static final String ACTION = "action";
     private static final String CREATE = "create";
     private static final String VIEW = "view";
+    private static final String DELETE = "delete";
+    private static final String UPDATE = "update";
 
     private static final String STARTPAGE = "index.jsp";
     private static final String CREATEPAGE = "create.jsp";
@@ -61,19 +63,26 @@ public class FrontController extends HttpServlet {
         List<String[]> persons = personService.get();
         session.setAttribute(PERSONS, persons);
 
-        PersonSaveAction personSaveAction = new PersonSaveAction();
-
         String action = request.getParameter(ACTION);
 
         if (action != null && !action.trim().isEmpty()) {
             switch (action) {
                 case CREATE: {
-                    personSaveAction.execute(request, response);
+                    new PersonSaveAction().execute(request, response);
                     //nextPage = CREATEPAGE;
                     nextPage = VIEWPAGE;
                     break;
                 }
                 case VIEW: {
+                    nextPage = VIEWPAGE;
+                    break;
+                }
+                case DELETE: {
+                    new PersonDeleteAction().execute(request, response);
+                    nextPage = VIEWPAGE;
+                    break;
+                }
+                case UPDATE: {
                     nextPage = VIEWPAGE;
                     break;
                 }

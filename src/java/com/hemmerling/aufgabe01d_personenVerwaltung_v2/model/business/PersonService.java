@@ -39,4 +39,9 @@ public class PersonService {
     public void add(Person person){
         persons.add(new String[]{person.getVorname(), person.getNachname()});
     }
+
+    public void remove(int id){
+        persons.remove(id);
+    }
+
 }

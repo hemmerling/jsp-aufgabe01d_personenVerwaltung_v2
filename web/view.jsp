@@ -29,8 +29,8 @@
         <ol>
             <% for (int ii=0; ii<persons.size();ii++) {%>
             <li><%= ii%>&nbsp;<%= persons.get(ii)[0]%>&nbsp;<%= persons.get(ii)[1]%>&nbsp;
-                <a href="FrontController?action=delete;person=<%= ii%>">Löschen</a>&nbsp;
-                <a href="FrontController?action=update;person=<%= ii%>">Bearbeiten</a></li>
+                <a href="FrontController?action=delete&id=<%= ii%>">Löschen</a>&nbsp;
+                <a href="FrontController?action=update&id=<%= ii%>">Bearbeiten</a></li>
                 <% } %>
         </ol>
         <% }%>
