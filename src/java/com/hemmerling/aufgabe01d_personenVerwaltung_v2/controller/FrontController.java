@@ -83,7 +83,7 @@ public class FrontController extends HttpServlet {
                     break;
                 }
                 case UPDATE: {
-                    nextPage = VIEWPAGE;
+                    nextPage = CREATEPAGE;
                     break;
                 }
             }

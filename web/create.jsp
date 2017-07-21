@@ -3,8 +3,14 @@
     Created on : 17.07.2017, 17:33:53
     Author     : Administrator
 --%>
+<%@page import="java.util.Enumeration"%>
+<%@page import="java.util.Iterator"%>
+<%@page import="java.io.PrintWriter"%>
+<%@page import="com.hemmerling.aufgabe01d_personenVerwaltung_v2.model.persistence.Person"%>
+<%@page import="com.hemmerling.aufgabe01d_personenVerwaltung_v2.model.business.*"%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -27,8 +33,26 @@
         </script>
         <form method="post" action="FrontController" name="theForm">
             <input type="hidden" name="action" value="create" />
-            Vorname: <input type="text" name="vorname" />
-            Nachname: <input type="text" name="nachname" />
+            <%
+            Enumeration paramNames = request.getParameterNames();
+            while (paramNames.hasMoreElements()) {
+                String paramName = (String) paramNames.nextElement();
+                String paramValue = request.getParameter(paramName);
+                if (paramValue != null && !paramValue.trim().isEmpty()) {
+                    out.print(paramValue + "</BR>");
+                }
+            } 
+            if ((request.getParameter("action")!=null) &&
+                (request.getParameter("action").equals("update")) &&
+                (request.getParameter("id")!=null)) {
+                PersonService personService = PersonService.getInstance(); // Singleton
+                int id = Integer.valueOf(request.getParameter("id"));
+                out.println("Vorname: <input type='text' name='vorname' value='" + personService.get().get(id)[0] + "'/>");
+                out.println("Nachname: <input type='text' name='nachname' value='" + personService.get().get(id)[1] + "'/>");
+            } else { %>
+                Vorname: <input type="text" name="vorname" />
+                Nachname: <input type="text" name="nachname" />
+            <% } %>
             <input type="button" value="Ausfüllen des Forumulars #1" onclick="fillForm1()"  />
             <input type="button" value="Ausfüllen des Forumulars #2" onclick="fillForm2()"  />
             <input type="reset" value="Reset" />

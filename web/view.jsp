@@ -21,18 +21,18 @@
             if (persons == null /* || items.isEmpty() */) {
         %>
         <% } else { %>
-        <ol>
+<!--        <ol>
             <% for (String[] person : persons) {%>
             <li><%= person[0]%>&nbsp;<%= person[1]%></li>
                 <% } %>
-        </ol>
-        <ol>
-            <% for (int ii=0; ii<persons.size();ii++) {%>
+        </ol>-->
+        
+            <% for (int ii=0; ii<persons.size();ii++) {%>          
             <li><%= ii%>&nbsp;<%= persons.get(ii)[0]%>&nbsp;<%= persons.get(ii)[1]%>&nbsp;
                 <a href="FrontController?action=delete&id=<%= ii%>">Löschen</a>&nbsp;
                 <a href="FrontController?action=update&id=<%= ii%>">Bearbeiten</a></li>
                 <% } %>
-        </ol>
+        
         <% }%>
         <jsp:include page = "footer.jsp" />
     </body>
