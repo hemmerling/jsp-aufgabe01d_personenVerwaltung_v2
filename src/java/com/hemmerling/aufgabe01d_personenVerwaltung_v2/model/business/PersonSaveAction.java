@@ -21,19 +21,14 @@ public class PersonSaveAction {
     private static final String NACHNAME = "nachname";
     // private /* static */ final String NACHNAME = getInitParameter("nachname");
 
-    private PersonService personService;
-
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         String vorname = request.getParameter(VORNAME);
         String nachname = request.getParameter(NACHNAME);
         if ((vorname != null && !vorname.trim().isEmpty())
                 & (nachname != null && !nachname.trim().isEmpty())) {
             Person person = new Person(vorname, nachname);
-            this.personService.add(person);
+            PersonService personService = PersonService.getInstance(); // Singleton
+            personService.add(person);
         }
-    }
-
-    public void set(PersonService personService) {
-        this.personService = personService;
     }
 }

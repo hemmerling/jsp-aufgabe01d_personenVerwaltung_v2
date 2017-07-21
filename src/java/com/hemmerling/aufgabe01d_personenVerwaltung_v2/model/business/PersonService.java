@@ -5,7 +5,7 @@
  */
 package com.hemmerling.aufgabe01d_personenVerwaltung_v2.model.business;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import com.hemmerling.aufgabe01d_personenVerwaltung_v2.model.persistence.*;
 
@@ -31,7 +31,7 @@ public class PersonService {
     
     public List<String[]> get(){
         if (persons == null) {
-            persons = new LinkedList<String[]>();
+            persons = new ArrayList<String[]>();
         }
         return persons;
     }

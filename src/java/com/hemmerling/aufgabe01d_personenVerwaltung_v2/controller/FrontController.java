@@ -52,25 +52,22 @@ public class FrontController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PersonService personService;
         String nextPage = STARTPAGE;
         response.setContentType("text/html;charset=UTF-8");
 
         HttpSession session = request.getSession();
-        personService = PersonService.getInstance(); // Singleton
+        PersonService personService = PersonService.getInstance(); // Singleton
         Object obj = session.getAttribute(PERSONS);
         List<String[]> persons = personService.get();
         session.setAttribute(PERSONS, persons);
 
         PersonSaveAction personSaveAction = new PersonSaveAction();
-        personSaveAction.set(personService);
 
         String action = request.getParameter(ACTION);
 
         if (action != null && !action.trim().isEmpty()) {
             switch (action) {
                 case CREATE: {
-                    personSaveAction.set(personService);
                     personSaveAction.execute(request, response);
                     //nextPage = CREATEPAGE;
                     nextPage = VIEWPAGE;
