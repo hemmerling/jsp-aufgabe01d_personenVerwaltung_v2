@@ -42,29 +42,12 @@ public class FrontController extends HttpServlet {
     private static final String ITEMS = "items";
     // private /* static */ final String ITEMS = getInitParameter("ITEMS");
 
-    private static final String STARTSEITE = "index.jsp";
-    private static final String ANLEGEN = "anlegen.jsp";
-    private static final String AUFLISTEN = "auflisten.jsp";
+    private static final String STARTPAGE = "index.jsp";
+    private static final String CREATEPAGE = "create.jsp";
+    private static final String VIEWPAGE = "view.jsp";
 
-    private String personAnlegen(List<String[]> items, HttpServletRequest request) {
-        String vorname = request.getParameter(VORNAME);
-        String nachname = request.getParameter(NACHNAME);
-        String sresult = STARTSEITE;
-        boolean isPersonAnlegen = (vorname != null && nachname != null
-                && !vorname.trim().isEmpty() && !nachname.trim().isEmpty());
-        if (isPersonAnlegen) {
-            items.add(new String[]{vorname, nachname});
-            sresult = ANLEGEN;
-        } else {
-            if (vorname != null && nachname != null) {
-                sresult = ANLEGEN;
-            } else {
-                sresult = AUFLISTEN;
-            }
-        }
-        return sresult;
-    }
-
+    private PersonService personService;
+ 
     private void forward(String nextPage, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(nextPage);
@@ -82,12 +65,13 @@ public class FrontController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         String[] parameterValues;
         boolean result;
-        String nextPage = STARTSEITE;
-        HttpSession session = request.getSession();
+        String nextPage = STARTPAGE;
         response.setContentType("text/html;charset=UTF-8");
+  
+        HttpSession session = request.getSession();
+        personService= new PersonService(session);
 
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -98,8 +82,6 @@ public class FrontController extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet FrontController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
 
             Enumeration paramNames = request.getParameterNames();
             while (paramNames.hasMoreElements()) {
@@ -109,6 +91,9 @@ public class FrontController extends HttpServlet {
                     out.print(paramValue + "</BR>");
                 }
             }
+            out.println("</body>");
+            out.println("</html>");
+
         }
 
         String action = request.getParameter(ACTION);
@@ -122,27 +107,21 @@ public class FrontController extends HttpServlet {
             ){
             switch (action) {
                 case CREATE: {
+                    PersonSaveAction personSaveAction = new PersonSaveAction();
                     Person person = new Person(vorname, nachname);
-                    new PersonSaveAction().execute(request, response);
+                    personSaveAction.set(person);
+                    personSaveAction.execute(request, response);
+                    nextPage = CREATE;
                     break;
                 }
                 case VIEW: {
+                    nextPage = VIEW;
                     break;
                 }
             }
 
         }
-
-//        List<String[]> items = (List<String[]>) session.getAttribute(ITEMS);
-//
-//        if (items == null) {
-//            items = new LinkedList<String[]>();
-//            session.setAttribute(ITEMS, items);
-//        }
-//
-//        nextPage = personAnlegen(items, request);
-        // an View weitergeben
-        // forward(nextPage, request, response);
+        forward(nextPage, request, response);
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

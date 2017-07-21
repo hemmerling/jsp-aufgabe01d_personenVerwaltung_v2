@@ -9,6 +9,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.hemmerling.aufgabe01d_personenVerwaltung_v2.model.persistence.Person;
 /**
  *
  * @author Administrator
@@ -25,26 +26,16 @@ public class PersonSaveAction {
     private static final String NACHNAME = "nachname";
     // private /* static */ final String NACHNAME = getInitParameter("nachname");
 
+    private Person person;
+    
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-    }
-
-    private String execute(List<String[]> items, HttpServletRequest request) {
         String vorname = request.getParameter(VORNAME);
         String nachname = request.getParameter(NACHNAME);
-        String sresult = STARTSEITE;
-        boolean isPersonAnlegen = (vorname != null && nachname != null
-                && !vorname.trim().isEmpty() && !nachname.trim().isEmpty());
-        if (isPersonAnlegen) {
-            items.add(new String[]{vorname, nachname});
-            sresult = ANLEGEN;
-        } else {
-            if (vorname != null && nachname != null) {
-                sresult = ANLEGEN;
-            } else {
-                sresult = AUFLISTEN;
-            }
-        }
-        return sresult;
+
     }
-       
+    
+    public void set(Person person) {
+        this.person = person;
+    }
+
 }

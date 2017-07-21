@@ -14,7 +14,7 @@
     </head>
     <body>
         <jsp:include page = "header.jsp" />
-        <h1>Personenliste - ## wird im augenblick nicht genutzt ##</h1>
+        <h1>Personenliste</h1>
         <%
             List<String[]> items = (List<String[]>) session.getAttribute("items");
             if (items == null /* || items.isEmpty() */) {

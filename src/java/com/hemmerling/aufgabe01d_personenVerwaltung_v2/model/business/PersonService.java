@@ -16,21 +16,21 @@ import javax.servlet.http.HttpSession;
 public class PersonService {
     
     // Sitzungsattribut
-    private static final String ITEMS = "items";
-    // private /* static */ final String ITEMS = getInitParameter("ITEMS");
+    private static final String LISTOFPERSONS = "listofpersons";
+    
+    List<String[]> listofpersons;
 
-    List<String[]> items;
-
-    PersonService(HttpSession session){
-        items = (List<String[]>) session.getAttribute(ITEMS);
-        if (items == null) {
-            items = new LinkedList<String[]>();
-            session.setAttribute(ITEMS, items);
+    public PersonService(HttpSession session){
+        
+        listofpersons = (List<String[]>) session.getAttribute(LISTOFPERSONS);
+        if (listofpersons == null) {
+            listofpersons = new LinkedList<String[]>();
+            session.setAttribute(LISTOFPERSONS, listofpersons);
         } 
     }
     
     public List<String[]> getItems(){
-        return items;
+        return listofpersons;
     }
     
     public void putItem(){
