@@ -32,24 +32,27 @@
             }
         </script>
         <form method="post" action="FrontController" name="theForm">
-            <input type="hidden" name="action" value="create" />
             <%
-            Enumeration paramNames = request.getParameterNames();
-            while (paramNames.hasMoreElements()) {
-                String paramName = (String) paramNames.nextElement();
-                String paramValue = request.getParameter(paramName);
-                if (paramValue != null && !paramValue.trim().isEmpty()) {
-                    out.print(paramValue + "</BR>");
-                }
-            } 
+//            Enumeration paramNames = request.getParameterNames();
+//            while (paramNames.hasMoreElements()) {
+//                String paramName = (String) paramNames.nextElement();
+//                String paramValue = request.getParameter(paramName);
+//                if (paramValue != null && !paramValue.trim().isEmpty()) {
+//                    out.print(paramValue + "</BR>");
+//                }
+//            } 
             if ((request.getParameter("action")!=null) &&
                 (request.getParameter("action").equals("update")) &&
                 (request.getParameter("id")!=null)) {
                 PersonService personService = PersonService.getInstance(); // Singleton
-                int id = Integer.valueOf(request.getParameter("id"));
+                String idString = request.getParameter("id");
+                int id = Integer.valueOf(idString);
+                out.println("<input type='hidden' name='action' value='set' />");
+                out.println("<input type='hidden' name='id' value='" + idString + "' />");
                 out.println("Vorname: <input type='text' name='vorname' value='" + personService.get().get(id)[0] + "'/>");
                 out.println("Nachname: <input type='text' name='nachname' value='" + personService.get().get(id)[1] + "'/>");
             } else { %>
+                <input type="hidden" name="action" value="create" />
                 Vorname: <input type="text" name="vorname" />
                 Nachname: <input type="text" name="nachname" />
             <% } %>

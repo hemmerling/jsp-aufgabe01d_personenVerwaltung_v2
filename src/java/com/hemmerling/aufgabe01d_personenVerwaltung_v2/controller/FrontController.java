@@ -30,6 +30,7 @@ public class FrontController extends HttpServlet {
     private static final String VIEW = "view";
     private static final String DELETE = "delete";
     private static final String UPDATE = "update";
+    private static final String SET = "set";
 
     private static final String STARTPAGE = "index.jsp";
     private static final String CREATEPAGE = "create.jsp";
@@ -67,7 +68,12 @@ public class FrontController extends HttpServlet {
 
         if (action != null && !action.trim().isEmpty()) {
             switch (action) {
-                case CREATE: {
+               case UPDATE: {
+                    new PersonSaveAction().execute(request, response);
+                    nextPage = CREATEPAGE;
+                    break;
+                }
+               case CREATE: {
                     new PersonSaveAction().execute(request, response);
                     //nextPage = CREATEPAGE;
                     nextPage = VIEWPAGE;
@@ -82,8 +88,10 @@ public class FrontController extends HttpServlet {
                     nextPage = VIEWPAGE;
                     break;
                 }
-                case UPDATE: {
-                    nextPage = CREATEPAGE;
+                case SET: {
+                    new PersonSetAction().execute(request, response);
+                    //nextPage = CREATEPAGE;
+                    nextPage = VIEWPAGE;
                     break;
                 }
             }
