@@ -5,20 +5,15 @@
  */
 package com.hemmerling.aufgabe01d_personenVerwaltung_v2.model.business;
 
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.hemmerling.aufgabe01d_personenVerwaltung_v2.model.persistence.Person;
+
 /**
  *
  * @author Administrator
  */
 public class PersonSaveAction {
-
-    private static final String STARTSEITE = "index.jsp";
-    private static final String ANLEGEN = "anlegen.jsp";
-    private static final String AUFLISTEN = "auflisten.jsp";
 
     // Parameter
     private static final String VORNAME = "vorname";
@@ -26,16 +21,19 @@ public class PersonSaveAction {
     private static final String NACHNAME = "nachname";
     // private /* static */ final String NACHNAME = getInitParameter("nachname");
 
-    private Person person;
-    
+    private PersonService personService;
+
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         String vorname = request.getParameter(VORNAME);
         String nachname = request.getParameter(NACHNAME);
-
+        if ((vorname != null && !vorname.trim().isEmpty())
+                & (nachname != null && !nachname.trim().isEmpty())) {
+            Person person = new Person(vorname, nachname);
+            this.personService.add(person);
+        }
     }
-    
-    public void set(Person person) {
-        this.person = person;
-    }
 
+    public void set(PersonService personService) {
+        this.personService = personService;
+    }
 }

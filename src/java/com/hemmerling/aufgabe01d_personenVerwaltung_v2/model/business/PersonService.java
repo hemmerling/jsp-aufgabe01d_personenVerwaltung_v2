@@ -7,7 +7,7 @@ package com.hemmerling.aufgabe01d_personenVerwaltung_v2.model.business;
 
 import java.util.LinkedList;
 import java.util.List;
-import javax.servlet.http.HttpSession;
+import com.hemmerling.aufgabe01d_personenVerwaltung_v2.model.persistence.*;
 
 /**
  *
@@ -15,24 +15,28 @@ import javax.servlet.http.HttpSession;
  */
 public class PersonService {
     
-    // Sitzungsattribut
-    private static final String LISTOFPERSONS = "listofpersons";
-    
-    List<String[]> listofpersons;
+    static List<String[]> persons;
+    private static PersonService instance = null;
 
-    public PersonService(HttpSession session){
-        
-        listofpersons = (List<String[]>) session.getAttribute(LISTOFPERSONS);
-        if (listofpersons == null) {
-            listofpersons = new LinkedList<String[]>();
-            session.setAttribute(LISTOFPERSONS, listofpersons);
-        } 
+    protected PersonService(){
+        // Exists only to defeat instantiation.
     }
     
-    public List<String[]> getItems(){
-        return listofpersons;
+    public static PersonService getInstance() {
+        if ( instance == null) {
+            instance = new PersonService();
+        }
+        return instance;
+    }    
+    
+    public List<String[]> get(){
+        if (persons == null) {
+            persons = new LinkedList<String[]>();
+        }
+        return persons;
     }
     
-    public void putItem(){
+    public void add(Person person){
+        persons.add(new String[]{person.getVorname(), person.getNachname()});
     }
 }

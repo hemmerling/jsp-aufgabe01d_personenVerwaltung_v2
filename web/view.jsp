@@ -16,13 +16,13 @@
         <jsp:include page = "header.jsp" />
         <h1>Personenliste</h1>
         <%
-            List<String[]> items = (List<String[]>) session.getAttribute("items");
-            if (items == null /* || items.isEmpty() */) {
+            List<String[]> persons = (List<String[]>) session.getAttribute("persons");
+            if (persons == null /* || items.isEmpty() */) {
         %>
         <% } else { %>
         <ol>
-            <% for (String[] item : items) {%>
-            <li><%= item[0]%> <%= item[1]%></li>
+            <% for (String[] person : persons) {%>
+            <li><%= person[0]%> <%= person[1]%></li>
                 <% } %>
         </ol>
         <% }%>

@@ -6,13 +6,6 @@
 package com.hemmerling.aufgabe01d_personenVerwaltung_v2.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
@@ -21,9 +14,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
-import com.hemmerling.aufgabe01d_personenVerwaltung_v2.model.persistence.*;
 import com.hemmerling.aufgabe01d_personenVerwaltung_v2.model.business.*;
+
 /**
  *
  * @author Administrator
@@ -35,19 +29,12 @@ public class FrontController extends HttpServlet {
     private static final String CREATE = "create";
     private static final String VIEW = "view";
 
-    private static final String VORNAME = "vorname";
-    private static final String NACHNAME = "nachname";
-
-    // Sitzungsattribut
-    private static final String ITEMS = "items";
-    // private /* static */ final String ITEMS = getInitParameter("ITEMS");
-
     private static final String STARTPAGE = "index.jsp";
     private static final String CREATEPAGE = "create.jsp";
     private static final String VIEWPAGE = "view.jsp";
 
-    private PersonService personService;
- 
+    private static final String PERSONS = "persons";
+
     private void forward(String nextPage, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(nextPage);
@@ -65,57 +52,32 @@ public class FrontController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String[] parameterValues;
-        boolean result;
+        PersonService personService;
         String nextPage = STARTPAGE;
         response.setContentType("text/html;charset=UTF-8");
-  
+
         HttpSession session = request.getSession();
-        personService= new PersonService(session);
+        personService = PersonService.getInstance(); // Singleton
+        Object obj = session.getAttribute(PERSONS);
+        List<String[]> persons = personService.get();
+        session.setAttribute(PERSONS, persons);
 
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet FrontController</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet FrontController at " + request.getContextPath() + "</h1>");
-
-            Enumeration paramNames = request.getParameterNames();
-            while (paramNames.hasMoreElements()) {
-                String paramName = (String) paramNames.nextElement();
-                String paramValue = request.getParameter(paramName);
-                if (paramValue != null && !paramValue.trim().isEmpty()) {
-                    out.print(paramValue + "</BR>");
-                }
-            }
-            out.println("</body>");
-            out.println("</html>");
-
-        }
+        PersonSaveAction personSaveAction = new PersonSaveAction();
+        personSaveAction.set(personService);
 
         String action = request.getParameter(ACTION);
-        String vorname = request.getParameter(VORNAME);
-        String nachname = request.getParameter(NACHNAME);
-        
-        if (
-                (action != null && !action.trim().isEmpty()) &
-                (vorname != null && !vorname.trim().isEmpty()) &
-                (nachname != null && !nachname.trim().isEmpty()) 
-            ){
+
+        if (action != null && !action.trim().isEmpty()) {
             switch (action) {
                 case CREATE: {
-                    PersonSaveAction personSaveAction = new PersonSaveAction();
-                    Person person = new Person(vorname, nachname);
-                    personSaveAction.set(person);
+                    personSaveAction.set(personService);
                     personSaveAction.execute(request, response);
-                    nextPage = CREATE;
+                    //nextPage = CREATEPAGE;
+                    nextPage = VIEWPAGE;
                     break;
                 }
                 case VIEW: {
-                    nextPage = VIEW;
+                    nextPage = VIEWPAGE;
                     break;
                 }
             }
